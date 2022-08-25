@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="home.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
+      integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"
+      integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- <div class="friends">
+        <h1>Not Discord</h1>
+      </div>
+      <div class="message-area">
+        <div class="user">
+          <img
+            src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
+            alt=""
+          />
+          <div>
+            <h3>Peter</h3>
+            <h5>Online</h5>
+          </div>
+        </div>
+        <div class="message-container"></div>
+        <div class="input-container">
+          <input type="text" class="message-input" />
+          <button class="send">send</button>
+          <button class="call">call</button>
+        </div>
+      </div> -->
+      <div class="top-bar">
+        <div class="title">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuOl1EtXlQGhUmOxOk1LiJd9gIjMs6gIEAQw&usqp=CAU"
+            alt=""
+          />
+          <h1>Not Discord</h1>
+        </div>
+        <div class="talking-to">
+          <div class="user-talking-to"></div>
+          <button id="call" class="call" style="visibility: hidden">
+            <i class="fa-solid fa-phone"></i>
+          </button>
+        </div>
+        <div class="user">
+          <img
+            src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
+            alt=""
+          />
+          <div>
+            <h3 class="current-user">Undefined</h3>
+            <h5><i class="fa-solid fa-circle"></i> Online</h5>
+          </div>
+          <button class="logout-menu">
+            <i class="fa-solid fa-angle-down"></i>
+          </button>
+        </div>
+        <div class="logout-container" id="logout-container">
+          <button class="logout-button">
+            Logout <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="body-container">
+        <div class="friends">
+          <div class="add-friend">
+            <h4>friends</h4>
+            <button>Add</button>
+          </div>
+        </div>
+
+        <div class="message-and-input">
+          <div class="message-container"></div>
+          <form class="input-container">
+            <input
+              type="text"
+              placeholder="Type a message..."
+              class="message-input"
+            />
+            <button type="submit" class="send">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="./home.js"></script>
+</html>

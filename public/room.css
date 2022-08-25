@@ -1,0 +1,259 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #23272a;
+  background: linear-gradient(45deg, #0f1011, rgb(65, 64, 64));
+  height: 110vh;
+}
+
+.room-container {
+  width: 90%;
+  height: auto;
+  background-color: #1f262e;
+  margin: auto;
+  margin-top: 2rem;
+  border-radius: 2rem;
+  box-shadow: 5px 5px 5px rgb(29, 29, 29);
+  padding: 2rem;
+}
+
+.top-bar {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-bar h1 {
+  color: rgb(189, 189, 189);
+}
+
+.top-bar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 3rem;
+  margin-right: 1rem;
+}
+
+.top-bar div {
+  display: flex;
+}
+
+.toggle-chat {
+  width: 100px;
+  height: 45px;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  color: white;
+  border: 1px solid rgb(97, 97, 97);
+}
+
+.chat-and-video {
+  width: 100%;
+  display: flex;
+  margin-top: 2rem;
+}
+
+.video-and-buttons {
+  width: 100%;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.buttons-container .control {
+  margin: 0 1rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 1rem;
+  background-color: transparent;
+  color: white;
+  border: 2px solid rgb(79, 79, 79);
+  outline: none;
+  font-size: 1rem;
+}
+
+.end-call {
+  width: 100px;
+  border-radius: 1rem;
+  border: none;
+  background-color: rgb(211, 57, 57);
+  color: white;
+}
+
+.video-grid {
+  width: 100%;
+  height: 500px;
+  background-color: #0f1011;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.message {
+  width: fit-content;
+  max-width: 70%;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  background-color: #21242b;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+}
+.message p {
+  margin-left: 1rem;
+}
+
+.message img {
+  width: 30px;
+  height: 30px;
+  border-radius: 4rem;
+}
+.my-message {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+.my-message p {
+  min-width: 60px;
+  background-color: #10b664;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border-bottom-right-radius: 0;
+}
+
+.chat-and-input {
+  width: 40%;
+  margin-left: 1rem;
+}
+
+.no-display {
+  display: none;
+}
+
+.change-color {
+  background-color: #10b664;
+}
+
+.chat-and-input input {
+  background-color: transparent;
+  border: none;
+  outline: rgb(97, 97, 97);
+  border-radius: 2rem;
+  width: 65%;
+  height: 20px;
+  padding: 1rem;
+  color: white;
+  margin-top: 1rem;
+}
+
+.chat-and-input input:focus {
+  border: 2px solid rgb(97, 97, 97);
+}
+
+.chat-and-input button {
+  width: 30%;
+  height: 40px;
+  border-radius: 1rem;
+  border: none;
+  background-color: #10b664;
+  color: white;
+  margin-top: 1rem;
+}
+
+video {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chat-grid {
+  width: 100%;
+  height: 500px;
+  overflow: auto;
+  border: 2px solid rgb(61, 61, 61);
+  padding: 1rem;
+  background-color: #1a1b20;
+  border-radius: 2rem;
+}
+
+.chat-grid::-webkit-scrollbar {
+  width: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+.call-notification {
+  width: 100%;
+  color: white;
+  background-color: #0f1011;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+}
+.call-notification img {
+  width: 30px;
+  height: 30px;
+  border-radius: 2rem;
+  margin-right: 1rem;
+}
+.fa-phone-volume {
+  color: rgb(190, 54, 54);
+}
+
+/* .video-area {
+  display: flex;
+}
+
+#video-grid {
+  width: 80%;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  padding: 1rem;
+}
+.myVideo {
+  width: 30%;
+  position: absolute;
+  right: 0;
+  padding-right: 1rem;
+}
+.theirVideo {
+  width: 100%;
+  height: 90vh;
+  object-fit: cover;
+}
+
+.button-container {
+  width: 20%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+} */
+
+/* button {
+  width: 100px;
+  height: 35px;
+  background-color: rgb(212, 92, 92);
+  color: white;
+  border: none;
+  border-radius: 1rem;
+} */

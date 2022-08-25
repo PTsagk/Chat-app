@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="room.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
+      integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script>
+      const ROOM_ID = "<%= roomId %>";
+    </script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="script.js" defer></script>
+    <title>Document</title>
+    <style>
+      /* #video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 300px);
+        grid-auto-rows: 300px;
+      }
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      } */
+    </style>
+  </head>
+  <body>
+    <div class="room-container">
+      <div class="top-bar">
+        <div>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuOl1EtXlQGhUmOxOk1LiJd9gIjMs6gIEAQw&usqp=CAU"
+            alt=""
+          />
+          <h1>Not Discord</h1>
+        </div>
+        <button class="toggle-chat">
+          Chat <i class="fa-solid fa-comment"></i>
+        </button>
+      </div>
+      <div class="chat-and-video">
+        <div class="video-and-buttons">
+          <div class="video-grid"></div>
+          <div class="buttons-container">
+            <button class="control stop-video">
+              <i class="fa-solid fa-video"></i>
+            </button>
+            <button class="end-call">End call</button>
+            <button class="control stop-audio">
+              <i class="fa-solid fa-microphone"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chat-and-input">
+          <div class="chat-grid">
+            <i class="fa-solid fa-phone-arrow-down-left"></i>
+          </div>
+          <input
+            type="text"
+            placeholder="Type a message..."
+            class="message-input"
+          />
+          <button class="send-button">
+            Send <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="video-area">
+      <div id="video-grid"></div>
+      <div class="button-container">
+        <button>Leave</button>
+      </div>
+    </div> -->
+  </body>
+</html>
