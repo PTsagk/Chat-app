@@ -178,6 +178,14 @@ body {
   width: 0;
 }
 
+.friends h1 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #525961;
+}
 .friend {
   display: flex;
   align-items: center;

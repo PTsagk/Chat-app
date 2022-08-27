@@ -6,11 +6,11 @@ const register = async (req, res) => {
   try {
     const user = await User.create({ ...req.body });
     const token = user.createJWT();
-    res.cookie("token", token, {
+    res.cookie("token", `Bearer ${token}`, {
       secure: false,
       httpOnly: true,
     });
-    res.status(StatusCodes.CREATED).json({ user: { name: user.username } });
+    res.send("success");
   } catch (error) {
     res.send(error);
   }
@@ -27,11 +27,11 @@ const login = async (req, res) => {
     const isPasswordCorrect = await user.comparePassword(password);
     if (isPasswordCorrect) {
       const token = user.createJWT();
-      res.cookie("token", token, {
+      res.cookie("token", `Bearer ${token}`, {
         secure: false,
         httpOnly: true,
       });
-      res.status(StatusCodes.OK).json({ username });
+      res.send("success");
     } else {
       res.send("error");
     }

@@ -9,6 +9,8 @@ const authenticate = require("./middleware/authentication");
 const connectDB = require("./db/connect");
 const socketio = require("socket.io");
 const { v4: uuidV4 } = require("uuid");
+const notFoundMiddleware = require("./middleware/not-found");
+const errorHandlerMiddleware = require("./middleware/error-handler");
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
@@ -21,7 +23,7 @@ app.use(express.static("./public"));
 
 app.use("/auth", authRouter);
 app.use("/messages", authenticate, messagesRouter);
-app.use("/users", usersRouter);
+app.use("/users", authenticate, usersRouter);
 
 // app.get("/call", (req, res) => {
 //   res.redirect(`/${uuidV4()}`);
@@ -34,6 +36,9 @@ app.get("/home", (req, res) => {
 app.get("/:room", (req, res) => {
   res.render("room", { roomId: req.params.room });
 });
+
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 io.on("connection", (socket) => {
   socket.on("joinRoom", (id) => {

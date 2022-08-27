@@ -8,7 +8,7 @@ form.addEventListener("submit", async (e) => {
     const { data } = await axios.post("/auth/login", { username, password });
     document.querySelector(".username-input").value = "";
     document.querySelector(".password-input").value = "";
-    if (data != "error") {
+    if (data == "success") {
       window.location.href = "/home";
     }
   } catch (error) {

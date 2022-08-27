@@ -3,6 +3,7 @@ const socket = io();
 const messageForm = document.querySelector(".input-container");
 const messageInput = document.querySelector(".message-input");
 const messageContainer = document.querySelector(".message-container");
+const friends = document.querySelector(".friends");
 const callBtn = document.querySelector(".call");
 const logoutMenuButton = document.querySelector(".logout-menu");
 const logoutMenu = document.getElementById("logout-container");
@@ -15,6 +16,7 @@ logoutMenuButton.addEventListener("click", () => {
   logoutMenu.classList.toggle("slide-show");
 });
 
+friends.innerHTML = `<h1>Loading...</h1>`;
 //Decodes the token and gets the current user and then procceeds with the page load
 const getCurrentUser = async () => {
   const { data } = await axios.get("/users/user", {
@@ -25,19 +27,14 @@ const getCurrentUser = async () => {
 
 getCurrentUser()
   //If token couldn't verify go back to login page
-  .then(function (thisUser) {
-    if (thisUser === "error") {
-      window.location.href = "./index.html";
-    }
-
+  .then(function (currentUser) {
     //display all available users to chat
     showUsers();
 
     //Initialize varaibles
-    let currentUser = thisUser.username;
+
     let username2 = "";
     let roomId = "";
-    const friends = document.querySelector(".friends");
 
     currentUserElement.innerHTML = `<h3>${currentUser}</h3>`;
 
@@ -45,7 +42,7 @@ getCurrentUser()
     messageForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const message = messageInput.value;
-      if (message != null && message != "") {
+      if (message != null && message != "" && username2 != "") {
         messageInput.value = ``;
         const data = axios.post(
           "/messages/add",
@@ -112,6 +109,7 @@ getCurrentUser()
     //When called return all the users
     async function showUsers() {
       const { data } = await axios.get("/users", {});
+      friends.innerHTML = ``;
       data.forEach((user) => {
         const friend = document.createElement("div");
         friend.innerHTML = `
