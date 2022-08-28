@@ -29,7 +29,7 @@ getCurrentUser()
   //If token couldn't verify go back to login page
   .then(function (currentUser) {
     //display all available users to chat
-    showUsers();
+    showFriends();
 
     //Initialize varaibles
 
@@ -107,12 +107,58 @@ getCurrentUser()
     });
 
     //When called return all the users
-    async function showUsers() {
+    async function showFriends() {
       const { data } = await axios.get("/users", {});
-      friends.innerHTML = ``;
-      data.forEach((user) => {
+      console.log(data);
+      friends.innerHTML = `<div class="add-friend">
+      <h4>friends</h4>
+    </div>`;
+
+      // for add friend
+      const addFriend = document.querySelector(".add-friend");
+      const addFriendButton = document.createElement("button");
+      addFriendButton.innerText = "Add";
+      addFriendButton.classList.add("add-friend-button");
+
+      //For search friend
+      const friendForm = document.createElement("form");
+      const friendInput = document.createElement("input");
+      const searchButton = document.createElement("button");
+
+      friendForm.classList.add("friend-form");
+      friendForm.classList.add("hide");
+      friendInput.classList.add("friend-input");
+      searchButton.classList.add("search-button");
+      searchButton.type = "submit";
+      searchButton.innerHTML = `<i class="fa-solid fa-paper-plane"></i>`;
+
+      friendForm.addEventListener("submit", async (e) => {
+        //Get user from input and add for friend
+        e.preventDefault();
+        const friendToRequest = friendInput.value;
+        friendInput.value = ``;
+        await axios.patch(
+          "/users/user",
+          { friendToRequest },
+          { withCredentials: true }
+        );
+      });
+      friendForm.append(friendInput);
+      friendForm.append(searchButton);
+
+      friends.append(friendForm);
+
+      addFriendButton.addEventListener("click", () => {
+        //Show input
+        friendForm.classList.toggle("hide");
+      });
+      addFriend.append(addFriendButton);
+      data.friends.forEach((user) => {
         const friend = document.createElement("div");
-        friend.innerHTML = `
+        if (user.isFriend == false) {
+          friend.innerHTML = `<button>Accept</button>`;
+        } else {
+          friend.innerHTML = `
     <div class="username">${user.username}</div>
         <img
           src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
@@ -120,47 +166,48 @@ getCurrentUser()
         />
         <h4>${user.username}</h4>`;
 
-        friend.classList.add("friend");
-        friend.addEventListener("click", async (e) => {
-          messageContainer.innerHTML = ``;
-          username2 = e.target.innerText;
-          const { data } = await axios.post(
-            "/messages",
-            { talkingTo: username2 },
-            {
-              withCredentials: true,
-            }
-          );
-          //For security
-          // if (
-          //   username2 == currentUser ||
-          //   (currentUser != data.username1 && currentUser != data.username2)
-          // ) {
-          //   window.location.href = "index.html";
-          // }
-          roomId = data._id;
-          socket.emit("joinRoom", roomId);
-
-          if (data.messages) {
-            const messages = data.messages;
-
-            messages.forEach((message) => {
-              let messageEl = "";
-              if (message.message == "isCall") {
-                messageEl = formatMessageCall(message.user);
-                messageContainer.append(messageEl);
-              } else {
-                messageEl = formatMessage(message);
-                messageContainer.append(messageEl);
+          friend.classList.add("friend");
+          friend.addEventListener("click", async (e) => {
+            messageContainer.innerHTML = ``;
+            username2 = e.target.innerText;
+            const { data } = await axios.post(
+              "/messages",
+              { talkingTo: username2 },
+              {
+                withCredentials: true,
               }
-            });
-            messageContainer.scrollTop = messageContainer.scrollHeight;
+            );
+            //For security
+            // if (
+            //   username2 == currentUser ||
+            //   (currentUser != data.username1 && currentUser != data.username2)
+            // ) {
+            //   window.location.href = "index.html";
+            // }
+            roomId = data._id;
+            socket.emit("joinRoom", roomId);
 
-            //Add talking to in the top bar
-            userTalkingTo.innerHTML = `<h3>${username2}</h3>`;
-            document.getElementById("call").style.visibility = "visible";
-          }
-        });
+            if (data.messages) {
+              const messages = data.messages;
+
+              messages.forEach((message) => {
+                let messageEl = "";
+                if (message.message == "isCall") {
+                  messageEl = formatMessageCall(message.user);
+                  messageContainer.append(messageEl);
+                } else {
+                  messageEl = formatMessage(message);
+                  messageContainer.append(messageEl);
+                }
+              });
+              messageContainer.scrollTop = messageContainer.scrollHeight;
+
+              //Add talking to in the top bar
+              userTalkingTo.innerHTML = `<h3>${username2}</h3>`;
+              document.getElementById("call").style.visibility = "visible";
+            }
+          });
+        }
         friends.append(friend);
       });
     }

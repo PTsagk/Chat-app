@@ -1,8 +1,13 @@
 const express = require("express");
-const { getAllUsers, getCurrentUser } = require("../controllers/users");
+const {
+  getAllUsers,
+  getFriends,
+  getCurrentUser,
+  sendFriendRequest,
+} = require("../controllers/users");
 const router = express.Router();
 
-router.route("/").get(getAllUsers);
-router.route("/user").get(getCurrentUser);
+router.route("/").get(getFriends);
+router.route("/user").get(getCurrentUser).patch(sendFriendRequest);
 
 module.exports = router;

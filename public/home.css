@@ -15,6 +15,10 @@ body {
   align-items: center;
 }
 
+.hide {
+  display: none;
+}
+
 .container {
   width: 75vw;
   height: 90vh;
@@ -138,6 +142,15 @@ body {
   border-radius: 3rem;
 }
 
+.friend-input {
+  height: 25px;
+  width: 80%;
+  background-color: transparent;
+  padding: 1rem;
+  outline: none;
+  color: white;
+}
+
 .rooms {
   display: flex;
   justify-content: space-between;
@@ -147,7 +160,7 @@ body {
   color: #525961;
 }
 
-.friends button {
+.add-friend-button {
   width: 30px;
   background-color: #525961;
   color: #1f262e;
@@ -164,6 +177,10 @@ body {
   padding-left: 1rem;
   padding-right: 1rem;
   padding-bottom: 1rem;
+}
+
+.add-friend-button {
+  cursor: pointer;
 }
 
 .friends {
@@ -390,6 +407,18 @@ body {
   margin-left: 1rem;
   cursor: pointer;
 }
+
+.friend-form {
+  width: 100%;
+  border: 1px solid #525961;
+}
+
+.search-button {
+  color: #525961;
+  background-color: transparent;
+  padding: 0.5rem;
+}
+
 /* .friends-container {
   width: 200px;
   height: 100vh;
