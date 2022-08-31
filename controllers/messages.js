@@ -13,13 +13,7 @@ const getMessages = async (req, res) => {
       username2: currentUser,
     });
   }
-  if (!messages) {
-    messages = Message.create({
-      username1: currentUser,
-      username2: req.body.talkingTo,
-      messages: [],
-    });
-  }
+  
   res.json(messages);
 };
 

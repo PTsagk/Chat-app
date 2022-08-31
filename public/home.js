@@ -128,6 +128,7 @@ getCurrentUser()
       friendForm.classList.add("friend-form");
       friendForm.classList.add("hide");
       friendInput.classList.add("friend-input");
+      friendInput.placeholder='Enter username';
       searchButton.classList.add("search-button");
       searchButton.type = "submit";
       searchButton.innerHTML = `<i class="fa-solid fa-paper-plane"></i>`;
@@ -156,7 +157,34 @@ getCurrentUser()
       data.friends.forEach((user) => {
         const friend = document.createElement("div");
         if (user.isFriend == false) {
-          friend.innerHTML = `<button>Accept</button>`;
+          friend.classList.add('accept-button-container');
+          const acceptButton=document.createElement('button');
+          const declineButton=document.createElement('button');
+          acceptButton.innerText='accept';
+          acceptButton.classList.add(`${user.username}`);
+          declineButton.classList.add(`${user.username}`);
+          acceptButton.addEventListener('click',async (e)=>{
+            //accept friend request
+            let userToAccept= e.target;
+            userToAccept=userToAccept.classList[0];
+            await axios.patch('/users',{userToAccept},{withCredentials:true});
+            showFriends();
+          });
+
+          // For decline button
+          declineButton.innerText='Decline';
+          declineButton.addEventListener('click',async(e)=>{
+            //Decline friend request
+            let userToDecline=e.target;
+            userToDecline=userToDecline.classList[0];
+            await axios.delete('/users',{userToDecline},{withCredentials:true});
+            showFriends();
+          })
+
+          friend.innerHTML=`<p>${user.username} Friend Request`;
+          friend.append(acceptButton);
+          friend.append(declineButton);
+          // friend.innerHTML = `<button>Accept</button>`;
         } else {
           friend.innerHTML = `
     <div class="username">${user.username}</div>

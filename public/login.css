@@ -75,3 +75,16 @@ h1 {
   color: #99aab5;
   margin-bottom: 1rem;
 }
+.image {
+  margin-top: 2rem;
+}
+
+.image input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.image input button {
+}
