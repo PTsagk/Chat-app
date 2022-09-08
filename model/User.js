@@ -14,6 +14,9 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please provide password"],
     minlength: 3,
   },
+  image: {
+    type: String,
+  },
 });
 
 userSchema.pre("save", async function (next) {

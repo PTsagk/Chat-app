@@ -9,11 +9,19 @@ const logoutMenuButton = document.querySelector(".logout-menu");
 const logoutMenu = document.getElementById("logout-container");
 const talkingToContainer = document.querySelector(".talking-to");
 const currentUserElement = document.querySelector(".current-user");
+const userImage = document.querySelector(".user img");
 const userTalkingTo = document.querySelector(".user-talking-to");
+const mobileMenuBtn = document.querySelector(".mobile-menu");
 
 logoutMenuButton.addEventListener("click", () => {
   logoutMenuButton.classList.toggle("rotate-arrow");
   logoutMenu.classList.toggle("slide-show");
+});
+
+mobileMenuBtn.addEventListener("click", () => {
+  friends.classList.toggle("slide-in");
+  friends.classList.toggle("slide-out");
+  mobileMenuBtn.classList.toggle("green-color");
 });
 
 friends.innerHTML = `<h1>Loading...</h1>`;
@@ -27,9 +35,11 @@ const getCurrentUser = async () => {
 
 getCurrentUser()
   //If token couldn't verify go back to login page
-  .then(function (currentUser) {
+  .then(async function (userInfo) {
     //display all available users to chat
     showFriends();
+    const currentUser = userInfo.currentUser;
+    userImage.src = "./uploads/" + userInfo.image;
 
     //Initialize varaibles
 
@@ -108,8 +118,12 @@ getCurrentUser()
 
     //When called return all the users
     async function showFriends() {
+      if (window.innerWidth < 800) {
+        friends.classList.add("slide-in");
+        mobileMenuBtn.classList.add("green-color");
+      }
       const { data } = await axios.get("/users", {});
-      console.log(data);
+
       friends.innerHTML = `<div class="add-friend">
       <h4>friends</h4>
     </div>`;
@@ -128,7 +142,7 @@ getCurrentUser()
       friendForm.classList.add("friend-form");
       friendForm.classList.add("hide");
       friendInput.classList.add("friend-input");
-      friendInput.placeholder='Enter username';
+      friendInput.placeholder = "Enter username";
       searchButton.classList.add("search-button");
       searchButton.type = "submit";
       searchButton.innerHTML = `<i class="fa-solid fa-paper-plane"></i>`;
@@ -157,45 +171,67 @@ getCurrentUser()
       data.friends.forEach((user) => {
         const friend = document.createElement("div");
         if (user.isFriend == false) {
-          friend.classList.add('accept-button-container');
-          const acceptButton=document.createElement('button');
-          const declineButton=document.createElement('button');
-          acceptButton.innerText='accept';
+          friend.classList.add("accept-button-container");
+          const acceptButton = document.createElement("button");
+          const declineButton = document.createElement("button");
+          acceptButton.innerText = "accept";
           acceptButton.classList.add(`${user.username}`);
           declineButton.classList.add(`${user.username}`);
-          acceptButton.addEventListener('click',async (e)=>{
+          acceptButton.addEventListener("click", async (e) => {
             //accept friend request
-            let userToAccept= e.target;
-            userToAccept=userToAccept.classList[0];
-            await axios.patch('/users',{userToAccept},{withCredentials:true});
+            let userToAccept = e.target;
+            userToAccept = userToAccept.classList[0];
+            await axios.patch(
+              "/users",
+              { userToAccept },
+              { withCredentials: true }
+            );
             showFriends();
           });
 
           // For decline button
-          declineButton.innerText='Decline';
-          declineButton.addEventListener('click',async(e)=>{
+          declineButton.innerText = "Decline";
+          declineButton.addEventListener("click", async (e) => {
             //Decline friend request
-            let userToDecline=e.target;
-            userToDecline=userToDecline.classList[0];
-            await axios.delete('/users',{userToDecline},{withCredentials:true});
+            let userToDecline = e.target;
+            userToDecline = userToDecline.classList[0];
+            await axios.delete(
+              "/users",
+              { userToDecline },
+              { withCredentials: true }
+            );
             showFriends();
-          })
+          });
 
-          friend.innerHTML=`<p>${user.username} Friend Request`;
+          const friendImage = document.createElement("img");
+          friendImage.src = "./uploads/" + user.image;
+          friendImage.classList.add("friend-image");
+
+          friend.innerHTML = `
+          <h4>${user.username}</h4>
+          <p>Send a friend request</p>`;
+          friend.insertBefore(friendImage, friend.firstChild);
           friend.append(acceptButton);
           friend.append(declineButton);
           // friend.innerHTML = `<button>Accept</button>`;
         } else {
           friend.innerHTML = `
-    <div class="username">${user.username}</div>
+        <div class="username">${user.username}</div>
         <img
-          src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
+          src="./uploads/${user.image}"
           alt=""
         />
         <h4>${user.username}</h4>`;
 
           friend.classList.add("friend");
+
           friend.addEventListener("click", async (e) => {
+            // To close the friend bar in mobile view
+            if (window.innerWidth < 800) {
+              friends.classList.remove("slide-in");
+              friends.classList.add("slide-out");
+              mobileMenuBtn.classList.remove("green-color");
+            }
             messageContainer.innerHTML = ``;
             username2 = e.target.innerText;
             const { data } = await axios.post(

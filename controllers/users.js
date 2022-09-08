@@ -1,6 +1,9 @@
 const User = require("../model/User");
 const Message = require("../model/Message");
 const Friends = require("../model/Friends");
+const ImageModel = require("../model/imageModel");
+const path = require("path");
+const fs = require("fs");
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({}, { username: 1 });
@@ -22,11 +25,18 @@ const sendFriendRequest = async (req, res) => {
     if (req.body.friendToRequest == req.user.username) {
       throw new Error("Bad request");
     }
-    const friend = await Friends.updateOne(
+    const friendInfo = await User.findOne({
+      username: req.user.username,
+    });
+    await Friends.updateOne(
       { username: req.body.friendToRequest },
       {
         $push: {
-          friends: { username: req.user.username, isFriend: false },
+          friends: {
+            username: req.user.username,
+            isFriend: false,
+            image: friendInfo.image,
+          },
         },
       }
     );
@@ -45,11 +55,16 @@ const acceptFriendRequest = async (req, res) => {
       },
       { $set: { "friends.$.isFriend": true } }
     );
+    const friendInfo = await User.findOne({ username: req.user.username });
     await Friends.updateOne(
       { username: req.body.userToAccept },
       {
         $push: {
-          friends: { username: req.user.username, isFriend: true },
+          friends: {
+            username: req.user.username,
+            isFriend: true,
+            image: friendInfo.image,
+          },
         },
       }
     );
@@ -80,12 +95,14 @@ const getCurrentUser = async (req, res) => {
   try {
     if (req.user != "error") {
       const currentUser = req.user.username;
-      res.send(currentUser);
+      const userInfo = await User.findOne({ username: currentUser });
+      res.json({ currentUser, image: userInfo.image });
     } else {
       res.send("error");
     }
   } catch (error) {
     res.send(error);
+    console.log(error);
   }
 };
 

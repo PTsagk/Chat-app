@@ -14,12 +14,14 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
+const ImageModel = require("./model/imageModel");
+const { getCurrentUser } = require("./controllers/users");
 
 require("dotenv").config(); //for setting environment variables on server
 app.use(express.json());
 const PORT = 3000 || process.env.PORT;
 app.set("view engine", "ejs");
-app.use(express.static("./public"));
+app.use(express.static(__dirname + "/public/"));
 
 app.use("/auth", authRouter);
 app.use("/messages", authenticate, messagesRouter);
