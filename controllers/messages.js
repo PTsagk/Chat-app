@@ -13,7 +13,7 @@ const getMessages = async (req, res) => {
       username2: currentUser,
     });
   }
-  
+
   res.json(messages);
 };
 

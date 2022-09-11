@@ -14,8 +14,9 @@ const myPeer = new Peer();
 const url = new URL(window.location.href);
 const searchParams = url.searchParams;
 const username2 = searchParams.get("user");
+let username2Image = "";
 let currentUser = "";
-let roomId = "";
+let roomId = ROOM_ID;
 
 const myVideo = document.createElement("video");
 myVideo.muted = true;
@@ -58,26 +59,6 @@ getUserMedia({ video: true, audio: true }, (stream) => {
     }
   });
 });
-// navigator.mediaDevices
-//   .getUserMedia({
-//     video: true,
-//     audio: true,
-//   })
-//   .then((stream) => {
-//     myVideo.classList.add("myVideo");
-//     addVideoStream(myVideo, stream);
-//     myPeer.on("call", (call) => {
-//       call.answer(stream);
-//       const video = document.createElement("video");
-//       video.classList.add("theirVideo");
-//       call.on("stream", (userVideoStream) => {
-//         addVideoStream(video, userVideoStream);
-//       });
-//     });
-//     socket.on("user-connected", (userId) => {
-//       connectToNewUser(userId, stream);
-//     });
-//   });
 
 socket.on("user-disconnected", (userId) => {
   if (peers[userId]) {
@@ -123,6 +104,8 @@ async function loadChat() {
   } else {
     currentUser = data.username2;
   }
+  username2Image = await axios.post("/users/image", { username2 });
+  username2Image = username2Image.data;
   const messages = data.messages;
   messages.forEach((message) => {
     let messageEl = "";
@@ -143,14 +126,25 @@ function formatMessage(message) {
     messageEl.innerHTML = `<p>${message.message}</p>`;
     messageEl.classList.add("my-message");
   } else {
-    messageEl.innerHTML = `
-        <img
-          src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
-          alt=""
-        />
-        <p>${message.user}: ${message.message}</p>
-      `;
-    messageEl.classList.add("message");
+    if (username2Image) {
+      messageEl.innerHTML = `
+          <img
+            src="./uploads/${username2Image}"
+            alt=""
+          />
+          <p>${message.user}: ${message.message}</p>
+        `;
+      messageEl.classList.add("message");
+    } else {
+      messageEl.innerHTML = `
+          <img
+            src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
+            alt=""
+          />
+          <p>${message.user}: ${message.message}</p>
+        `;
+      messageEl.classList.add("message");
+    }
   }
   return messageEl;
 }
@@ -158,11 +152,11 @@ function formatMessage(message) {
 function formatMessageCall(message) {
   const callNotification = document.createElement("div");
   callNotification.innerHTML = `
-  <img
-  src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
-  alt=""
-/>
-  <p>${message.user}: Requested a call <i class="fa-solid fa-phone-volume"></i></p>`;
+    <img
+    src="./uploads/${username2Image}"
+    alt=""
+  />
+    <p>${message.user}: Requested a call <i class="fa-solid fa-phone-volume"></i></p>`;
   callNotification.classList.add("call-notification");
   return callNotification;
 }
@@ -180,18 +174,21 @@ endCall.addEventListener("click", () => {
 
 sendButton.addEventListener("click", () => {
   const message = messageInput.value;
-  messageInput.value = ``;
-  const data = axios.post(
-    "/messages/add",
-    { message: message, talkingTo: username2 },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-  socket.emit("chatMessage", roomId, message, currentUser);
-  const messageEl = formatMessage({ user: currentUser, message: message });
-  chat.append(messageEl);
-  chat.scrollTop = chat.scrollHeight;
+  if (message) {
+    messageInput.value = ``;
+    const data = axios.post(
+      "/messages/add",
+      { message: message, talkingTo: username2 },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    socket.emit("chatMessage", roomId, message, currentUser);
+
+    const messageEl = formatMessage({ user: currentUser, message: message });
+    chat.append(messageEl);
+    chat.scrollTop = chat.scrollHeight;
+  }
 });
 
 socket.on("message", (message, currentUser) => {
@@ -199,3 +196,10 @@ socket.on("message", (message, currentUser) => {
   chat.append(messageEl);
   chat.scrollTop = chat.scrollHeight;
 });
+
+async function getUserImage() {
+  let username2Image = await axios.post("/users/image", { username2 });
+  username2Image = username2Image.data;
+  console.log(username2Image);
+  return username2Image;
+}

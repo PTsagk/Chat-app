@@ -44,6 +44,7 @@ getCurrentUser()
     //Initialize varaibles
 
     let username2 = "";
+    let username2Image = "";
     let roomId = "";
 
     currentUserElement.innerHTML = `<h3>${currentUser}</h3>`;
@@ -241,6 +242,15 @@ getCurrentUser()
                 withCredentials: true,
               }
             );
+            username2Image = await axios.post(
+              "/users/image",
+              {
+                username2,
+              },
+              { withCredentials: true }
+            );
+            username2Image = username2Image.data;
+
             //For security
             // if (
             //   username2 == currentUser ||
@@ -284,16 +294,29 @@ getCurrentUser()
         messageEl.innerHTML = `<p>${message.message}</p>`;
         messageEl.classList.add("my-message");
       } else {
-        messageEl.innerHTML = `
-        <img
-          src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
-          alt=""
-        />
-        <h4>${message.user}:</h4>
-        <p>${message.message}</p>
-      `;
-        messageEl.classList.add("message");
+        if (username2Image) {
+          messageEl.innerHTML = `
+          <img
+            src="./uploads/${username2Image}"
+            alt=""
+          />
+          <h4>${message.user}:</h4>
+          <p>${message.message}</p>
+        `;
+          messageEl.classList.add("message");
+        } else {
+          messageEl.innerHTML = `
+          <img
+            src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
+            alt=""
+          />
+          <h4>${message.user}:</h4>
+          <p>${message.message}</p>
+        `;
+          messageEl.classList.add("message");
+        }
       }
+
       return messageEl;
     }
 
@@ -303,7 +326,7 @@ getCurrentUser()
         const answerButton = document.createElement("button");
         callNotification.innerHTML = `
       <img
-      src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
+      src="./uploads/${username2Image}"
       alt=""
     />
     <p>${user}: Requested a call</p>`;

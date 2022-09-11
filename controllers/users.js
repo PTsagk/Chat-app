@@ -106,11 +106,25 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
+const getUserImage = async (req, res) => {
+  try {
+    const username2 = req.body.username2;
+
+    const userInfo = await User.findOne({ username: username2 });
+    const image = userInfo.image;
+    res.send(image);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getFriends,
   sendFriendRequest,
   acceptFriendRequest,
   deleteFriendRequest,
+  getUserImage,
   getCurrentUser,
 };
