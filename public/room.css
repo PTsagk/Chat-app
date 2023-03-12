@@ -8,12 +8,11 @@
 body {
   background-color: #23272a;
   background: linear-gradient(45deg, #0f1011, rgb(65, 64, 64));
-  height: 110vh;
+  height: 100vh;
 }
 
 .room-container {
   width: 90%;
-  height: 90vh;
   background-color: #1f262e;
   margin: auto;
   margin-top: 2rem;
