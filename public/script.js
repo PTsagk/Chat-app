@@ -21,44 +21,63 @@ let roomId = ROOM_ID;
 const myVideo = document.createElement("video");
 myVideo.muted = true;
 const peers = {};
-var getUserMedia =
-  navigator.getUserMedia ||
-  navigator.webkitGetUserMedia ||
-  navigator.mozGetUserMedia;
-getUserMedia({ video: true, audio: true }, (stream) => {
-  myVideo.classList.add("myVideo");
-  addVideoStream(myVideo, stream);
-  myPeer.on("call", (call) => {
-    call.answer(stream);
-    const video = document.createElement("video");
-    video.classList.add("theirVideo");
-    call.on("stream", (userVideoStream) => {
-      addVideoStream(video, userVideoStream);
+// var getUserMedia =
+//   navigator.getUserMedia ||
+//   navigator.webkitGetUserMedia ||
+//   navigator.mozGetUserMedia;
+
+// getUserMedia({ video: true, audio: true }, (stream) => {
+//   myVideo.classList.add("myVideo");
+//   addVideoStream(myVideo, stream);
+//   myPeer.on("call", (call) => {
+//     call.answer(stream);
+//     const video = document.createElement("video");
+//     video.classList.add("theirVideo");
+//     call.on("stream", (userVideoStream) => {
+//       addVideoStream(video, userVideoStream);
+//     });
+//   });
+//   socket.on("user-connected", (userId) => {
+//     connectToNewUser(userId, stream);
+//   });
+
+navigator.mediaDevices
+  .getUserMedia({ video: true, audio: true })
+  .then((stream) => {
+    window.localStream = stream; // A
+    myVideo.classList.add("myVideo");
+    addVideoStream(myVideo, stream);
+    myPeer.on("call", (call) => {
+      call.answer(stream);
+      const video = document.createElement("video");
+      video.classList.add("theirVideo");
+      call.on("stream", (userVideoStream) => {
+        addVideoStream(video, userVideoStream);
+      });
+    });
+    socket.on("user-connected", (userId) => {
+      connectToNewUser(userId, stream);
+    });
+
+    closeCameraButton.addEventListener("click", () => {
+      if (stream.getVideoTracks()[0].enabled == false) {
+        stream.getVideoTracks()[0].enabled = true;
+        closeCameraButton.innerHTML = `<i class="fa-solid fa-video"></i>`;
+      } else {
+        stream.getVideoTracks()[0].enabled = false;
+        closeCameraButton.innerHTML = `<i class="fa-solid fa-video-slash"></i>`;
+      }
+    });
+    closeAudioButton.addEventListener("click", () => {
+      if (stream.getAudioTracks()[0].enabled == false) {
+        stream.getAudioTracks()[0].enabled = true;
+        closeAudioButton.innerHTML = `<i class="fa-solid fa-microphone"></i>`;
+      } else {
+        stream.getAudioTracks()[0].enabled = false;
+        closeAudioButton.innerHTML = `<i class="fa-solid fa-microphone-slash"></i>`;
+      }
     });
   });
-  socket.on("user-connected", (userId) => {
-    connectToNewUser(userId, stream);
-  });
-
-  closeCameraButton.addEventListener("click", () => {
-    if (stream.getVideoTracks()[0].enabled == false) {
-      stream.getVideoTracks()[0].enabled = true;
-      closeCameraButton.innerHTML = `<i class="fa-solid fa-video"></i>`;
-    } else {
-      stream.getVideoTracks()[0].enabled = false;
-      closeCameraButton.innerHTML = `<i class="fa-solid fa-video-slash"></i>`;
-    }
-  });
-  closeAudioButton.addEventListener("click", () => {
-    if (stream.getAudioTracks()[0].enabled == false) {
-      stream.getAudioTracks()[0].enabled = true;
-      closeAudioButton.innerHTML = `<i class="fa-solid fa-microphone"></i>`;
-    } else {
-      stream.getAudioTracks()[0].enabled = false;
-      closeAudioButton.innerHTML = `<i class="fa-solid fa-microphone-slash"></i>`;
-    }
-  });
-});
 
 socket.on("user-disconnected", (userId) => {
   if (peers[userId]) {

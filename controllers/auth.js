@@ -20,7 +20,7 @@ const register = async (req, res) => {
     let imageString = "";
     upload(req, res, (err) => {
       if (err) {
-        res.status(500).send("Error on image uplaod");
+        return res.status(500).send("Error on image uplaod");
       }
       // image = req.file.filename;
       const newImage = new ImageModel({
@@ -45,12 +45,12 @@ const register = async (req, res) => {
             secure: false,
             httpOnly: true,
           });
-          res.status(200).send("success");
+          return res.status(200).send("success");
         })
         .catch((err) => res.status(500).send(err));
     });
   } catch (error) {
-    res.status(500).send(error);
+    return res.status(500).send(error);
   }
 };
 
@@ -60,20 +60,20 @@ const login = async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     if (!user) {
-      res.status(404).send("User not found");
+      return res.status(404).send("User not found");
     }
     const isPasswordCorrect = await user.comparePassword(password);
     if (!isPasswordCorrect) {
-      res.status(404).send("User not found");
+      return res.status(404).send("User not found");
     }
     const token = user.createJWT();
     res.cookie("token", `Bearer ${token}`, {
       secure: false,
       httpOnly: true,
     });
-    res.status(200).send("success");
+    return res.status(200).send("success");
   } catch (error) {
-    res.status(500).send(error);
+    return res.status(500).send(error);
   }
 };
 
