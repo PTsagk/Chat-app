@@ -1,14 +1,6 @@
 const User = require("../model/User");
 const Message = require("../model/Message");
 const Friends = require("../model/Friends");
-const ImageModel = require("../model/imageModel");
-const path = require("path");
-const fs = require("fs");
-
-const getAllUsers = async (req, res) => {
-  const users = await User.find({}, { username: 1 });
-  res.status(200).json(users);
-};
 
 const getFriends = async (req, res) => {
   try {
@@ -16,14 +8,14 @@ const getFriends = async (req, res) => {
     const friends = await Friends.findOne({ username: currentUser });
     res.status(200).json(friends);
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 };
 
 const sendFriendRequest = async (req, res) => {
   try {
     if (req.body.friendToRequest == req.user.username) {
-      throw new Error("Bad request");
+      res.status(404).send("User not found");
     }
     const friendInfo = await User.findOne({
       username: req.user.username,
@@ -41,7 +33,7 @@ const sendFriendRequest = async (req, res) => {
       }
     );
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 };
 
@@ -73,9 +65,9 @@ const acceptFriendRequest = async (req, res) => {
       username2: req.body.userToAccept,
       messages: [],
     });
-    res.send("success");
+    res.status(200).send("success");
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 };
 
@@ -120,7 +112,6 @@ const getUserImage = async (req, res) => {
 };
 
 module.exports = {
-  getAllUsers,
   getFriends,
   sendFriendRequest,
   acceptFriendRequest,

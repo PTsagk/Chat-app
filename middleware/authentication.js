@@ -1,11 +1,10 @@
 const jwt = require("jsonwebtoken");
-const { UnauthenticatedError } = require("../errors");
 
 const auth = async (req, res, next) => {
   try {
     let cookies = req.headers?.cookie;
     if (!cookies) {
-      throw new UnauthenticatedError("Invalid authenctication");
+      res.status(401).send("Invalid Authentication");
     }
     cookies = cookies.split(";");
     let token = "";
@@ -17,7 +16,7 @@ const auth = async (req, res, next) => {
       }
     });
     if (!token || !token.startsWith("Bearer")) {
-      throw new UnauthenticatedError("Invalid authenctication");
+      res.status(401).send("Invalid Authentication");
     }
 
     token = token.split("%20")[1];
@@ -26,7 +25,7 @@ const auth = async (req, res, next) => {
     next();
   } catch (error) {
     req.user = "error";
-    res.send(error);
+    res.status(500).send(error);
   }
 };
 

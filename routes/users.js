@@ -1,6 +1,5 @@
 const express = require("express");
 const {
-  getAllUsers,
   getFriends,
   getCurrentUser,
   sendFriendRequest,

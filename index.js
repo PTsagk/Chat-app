@@ -1,6 +1,5 @@
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
+
 const http = require("http");
 const authRouter = require("./routes/auth");
 const messagesRouter = require("./routes/messages");
@@ -9,13 +8,9 @@ const authenticate = require("./middleware/authentication");
 const connectDB = require("./db/connect");
 const socketio = require("socket.io");
 const { v4: uuidV4 } = require("uuid");
-const notFoundMiddleware = require("./middleware/not-found");
-const errorHandlerMiddleware = require("./middleware/error-handler");
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-const ImageModel = require("./model/imageModel");
-const { getCurrentUser } = require("./controllers/users");
 
 require("dotenv").config(); //for setting environment variables on server
 app.use(express.json());
@@ -27,10 +22,6 @@ app.use("/auth", authRouter);
 app.use("/messages", authenticate, messagesRouter);
 app.use("/users", authenticate, usersRouter);
 
-// app.get("/call", (req, res) => {
-//   res.redirect(`/${uuidV4()}`);
-// });
-
 app.get("/home", (req, res) => {
   res.render("home");
 });
@@ -38,9 +29,6 @@ app.get("/home", (req, res) => {
 app.get("/:room", (req, res) => {
   res.render("room", { roomId: req.params.room });
 });
-
-app.use(notFoundMiddleware);
-app.use(errorHandlerMiddleware);
 
 io.on("connection", (socket) => {
   socket.on("joinRoom", (id) => {
