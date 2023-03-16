@@ -1,5 +1,5 @@
 const express = require("express");
-
+var bodyParser = require("body-parser");
 const http = require("http");
 const authRouter = require("./routes/auth");
 const messagesRouter = require("./routes/messages");
@@ -14,10 +14,11 @@ const io = socketio(server);
 
 require("dotenv").config(); //for setting environment variables on server
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 3000 || process.env.PORT;
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public/"));
-
 app.use("/auth", authRouter);
 app.use("/messages", authenticate, messagesRouter);
 app.use("/users", authenticate, usersRouter);

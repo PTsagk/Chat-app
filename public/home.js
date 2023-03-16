@@ -7,6 +7,7 @@ const friends = document.querySelector(".friends");
 const callBtn = document.querySelector(".call");
 const logoutMenuButton = document.querySelector(".logout-menu");
 const logoutMenu = document.getElementById("logout-container");
+const logoutButton = document.querySelector(".logout-button");
 const talkingToContainer = document.querySelector(".talking-to");
 const currentUserElement = document.querySelector(".current-user");
 const userImage = document.querySelector(".user img");
@@ -16,6 +17,11 @@ const mobileMenuBtn = document.querySelector(".mobile-menu");
 logoutMenuButton.addEventListener("click", () => {
   logoutMenuButton.classList.toggle("rotate-arrow");
   logoutMenu.classList.toggle("slide-show");
+});
+
+logoutButton.addEventListener("click", async () => {
+  await axios.post("/auth/logout", { withCredentials: true });
+  window.location.href = "/";
 });
 
 mobileMenuBtn.addEventListener("click", () => {

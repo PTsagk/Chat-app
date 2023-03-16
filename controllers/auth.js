@@ -18,10 +18,12 @@ const upload = multer({ storage: storage }).single("image");
 const register = async (req, res) => {
   try {
     let imageString = "";
+
     upload(req, res, (err) => {
       if (err) {
         return res.status(500).send("Error on image uplaod");
       }
+
       // image = req.file.filename;
       const newImage = new ImageModel({
         name: req.body.username,
@@ -34,9 +36,17 @@ const register = async (req, res) => {
       newImage
         .save()
         .then(async () => {
+          let { username, password } = req.body;
+          console.log(req.body);
+          if (!username || !password) {
+            return res.status(400).send("Bad request");
+          }
+          //remove white spaces
+          username = username.replace(/\s/g, "");
+          password = password.replace(/\s/g, "");
           const user = await User.create({
-            username: req.body.username,
-            password: req.body.password,
+            username: username,
+            password: password,
             image: imageString,
           });
           await Friends.create({ username: req.body.username });
@@ -57,7 +67,9 @@ const register = async (req, res) => {
 //Login user
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    let { username, password } = req.body;
+    username = username.replace(/\s/g, "");
+    password = password.replace(/\s/g, "");
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(404).send("User not found");
@@ -77,4 +89,9 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const logout = (req, res) => {
+  res.clearCookie("token");
+  res.end();
+};
+
+module.exports = { register, login, logout };

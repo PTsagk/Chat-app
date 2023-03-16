@@ -86,5 +86,14 @@ h1 {
   padding: 1rem;
 }
 
-.image input button {
+.error-message {
+  background-color: #c42525;
+  height: 20px;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  text-align: center;
 }

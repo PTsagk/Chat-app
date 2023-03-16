@@ -17,13 +17,16 @@
     <div class="login-container">
       <h1>Chat app</h1>
       <form method="post" class="login">
+        <div class="error-message" style="display: none">
+          Wrong username or password
+        </div>
         <div class="username">
           <h4>Username</h4>
           <input type="text" name="username" class="username-input" />
         </div>
         <div class="password">
           <h4>Password</h4>
-          <input type="text" name="password" class="password-input" />
+          <input type="password" name="password" class="password-input" />
         </div>
         <button class="loginbtn">Login</button>
         <p>Don't have an account? <a href="signup.html">Sign Up</a></p>

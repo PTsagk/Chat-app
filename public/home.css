@@ -114,6 +114,12 @@ body {
   color: white;
 }
 
+.logout-container button:hover {
+  background-color: white;
+  color: rgb(211, 57, 57);
+  cursor: pointer;
+}
+
 .slide-show {
   animation: a 0.5s;
   top: 55px;
