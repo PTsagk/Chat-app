@@ -42,6 +42,7 @@ body {
   background-color: #1f262e;
   color: white;
   border-bottom: 2px solid #171c22;
+  z-index: 1;
 }
 
 .title {
@@ -555,16 +556,23 @@ body {
   .title h1 {
     font-size: small;
   }
+  .user {
+    padding-left: 6rem;
+  }
   .user h3,
   h5,
-  .talking-to h3,
-  .logout-menu,
-  .logout-container {
+  .talking-to h3 {
     display: none;
   }
 
   .logout-container {
-    width: 100px;
+    width: 30%;
+    z-index: 0;
+  }
+  .logout-button {
+    width: 100%;
+    padding: 0.5rem;
+    z-index: 0;
   }
   .message-container {
     font-size: small;

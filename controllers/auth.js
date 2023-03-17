@@ -52,7 +52,7 @@ const register = async (req, res) => {
           await Friends.create({ username: req.body.username });
           const token = user.createJWT();
           res.cookie("token", `Bearer ${token}`, {
-            secure: false,
+            secure: true,
             httpOnly: true,
           });
           return res.status(200).send("success");
@@ -80,7 +80,7 @@ const login = async (req, res) => {
     }
     const token = user.createJWT();
     res.cookie("token", `Bearer ${token}`, {
-      secure: false,
+      secure: true,
       httpOnly: true,
     });
     return res.status(200).send("success");
