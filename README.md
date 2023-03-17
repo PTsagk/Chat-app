@@ -30,7 +30,7 @@ Start the server
   npm start
 ```
 
-Or your can check it live on https://chat-app-9itw.onrender.com
+Or your can check it live on https://chat-app-9itw.onrender.com (laoding time and video calling might have some bugs due to free server plan from render)
 
 
 ## Screenshots
